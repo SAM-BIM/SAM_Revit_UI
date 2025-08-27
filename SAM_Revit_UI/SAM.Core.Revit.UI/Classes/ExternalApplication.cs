@@ -40,6 +40,11 @@ namespace SAM.Core.Revit.UI
                 {
                     foreach (string path in paths)
                     {
+                        if (System.IO.Path.GetFileName(path).Equals("SAM.Revit.UI.dll", StringComparison.OrdinalIgnoreCase))
+                        {
+                            continue;
+                        }
+
                         Assembly assembly = Assembly.LoadFrom(path);
                         if (assembly == null)
                         {

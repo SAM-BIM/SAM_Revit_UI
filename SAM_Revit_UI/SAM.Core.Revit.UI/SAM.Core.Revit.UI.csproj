@@ -126,8 +126,8 @@
       set SAM_DIR=$(APPDATA)\SAM\%25Version%25
       if not exist "%25SAM_DIR%25" mkdir "%25SAM_DIR%25"
 
-      Copy /Y "$(SolutionDir)references\TopologicCore.dll" "$(TargetDir)TopologicCore.dll"
-      Copy /Y "$(SolutionDir)references\TK*.dll" "$(TargetDir)TK*.dll"
+      ::Copy /Y "$(SolutionDir)references\TopologicCore.dll" "$(TargetDir)TopologicCore.dll"
+      ::Copy /Y "$(SolutionDir)references\TK*.dll" "$(TargetDir)TK*.dll"
 
       copy "$(TargetDir)*.dll" "%25SAM_DIR%25"
       ::copy "$(TargetDir)*.exe" "%25SAM_DIR%25"

@@ -57,7 +57,7 @@ namespace SAM.Revit.UI.Classes
                 }
 
                 AssemblyLoadContext.Default.Resolving -= OnResolvingManaged;
-                AssemblyLoadContext.Default.ResolvingUnmanagedDll -= OnResolvingNative;
+                AssemblyLoadContext.Default.ResolvingUnmanagedDll -= OnResolvingUnmanaged;
 
                 enabled = false;
             }
@@ -72,10 +72,6 @@ namespace SAM.Revit.UI.Classes
                     return;
                 }
 
-                string directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-
-                AddManagedDirectory_NoLock(directory);
-
                 if (managedDirectories != null)
                 {
                     foreach (string managedDirectory in managedDirectories)
@@ -83,6 +79,10 @@ namespace SAM.Revit.UI.Classes
                         AddManagedDirectory_NoLock(managedDirectory);
                     }
                 }
+
+                string directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+
+                AddManagedDirectory_NoLock(directory);
 
                 if (nativeDirectories != null)
                 {
@@ -93,7 +93,7 @@ namespace SAM.Revit.UI.Classes
                 }
 
                 AssemblyLoadContext.Default.Resolving += OnResolvingManaged;
-                AssemblyLoadContext.Default.ResolvingUnmanagedDll += OnResolvingNative;
+                AssemblyLoadContext.Default.ResolvingUnmanagedDll += OnResolvingUnmanaged;
 
                 enabled = true;
             }
@@ -216,7 +216,7 @@ namespace SAM.Revit.UI.Classes
             }
         }
 
-        private IntPtr OnResolvingNative(Assembly requestingAssembly, string unmanagedDllName)
+        private IntPtr OnResolvingUnmanaged(Assembly requestingAssembly, string unmanagedDllName)
         {
             try
             {
