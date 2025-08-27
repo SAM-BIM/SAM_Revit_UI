@@ -26,19 +26,19 @@ namespace SAM.Revit.UI.Classes
 
             string directory_SAM = Path.GetDirectoryName(directory_Revit)!;
 
-            //assemblyResolver.Enable(
-            //  managedDirectories:
-            //  [
-            //    directory_SAM,
-            //    directory_Revit,
-            //    //Path.Combine(directory, "lib")
-            //  ],
-            //  nativeDirectories:
-            //  [
-            //    Path.Combine(directory_SAM, "runtimes", "win-x64", "native"),
-            //    Path.Combine(directory_Revit, "runtimes", "win-x64", "native"),
-            //  ]
-            //);
+            assemblyResolver.Enable(
+              managedDirectories:
+              [
+                directory_SAM,
+                directory_Revit,
+                //Path.Combine(directory, "lib")
+              ],
+              nativeDirectories:
+              [
+                Path.Combine(directory_SAM, "runtimes", "win-x64", "native"),
+                Path.Combine(directory_Revit, "runtimes", "win-x64", "native"),
+              ]
+            );
 
             // Optional: pin a specific version if you ship it (example)
             //assemblyResolver.AddRedirect("Newtonsoft.Json","Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed");
