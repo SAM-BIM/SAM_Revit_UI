@@ -33,6 +33,9 @@ namespace SAM.Analytical.Revit.UI.Forms
 
         private void Load()
         {
+            // Mirror the WinForms SimulateForm default: construction layers update is on by default.
+            simulateControl.UpdateConstructionLayersByPanelType = true;
+
             foreach (GeometryCalculationMethod method in Enum.GetValues(typeof(GeometryCalculationMethod))
                 .Cast<GeometryCalculationMethod>()
                 .Where(x => x != GeometryCalculationMethod.Undefined))
