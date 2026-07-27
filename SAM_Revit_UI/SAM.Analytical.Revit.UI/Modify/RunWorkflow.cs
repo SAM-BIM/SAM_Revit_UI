@@ -52,38 +52,51 @@ namespace SAM.Analytical.Revit.UI
             AnalyticalModel result = analyticalModel;
 
             using (CancellationTokenSource cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(externalCancellationToken))
-            using (ProgressFormHost progressFormHost = new ProgressFormHost("Tas Workflow", 1, true, Analytical.Tas.Query.CancelNote(null)))
             {
-                progressFormHost.CancelRequested += (s, e) => cancellationTokenSource.Cancel();
-
-                WorkflowCalculator workflowCalculator = new WorkflowCalculator(workflowSettings)
-                {
-                    CancellationToken = cancellationTokenSource.Token
-                };
-
-                workflowCalculator.StepsCounted += (s, e) =>
-                {
-                    progressFormHost.Max = e.Count;
-                };
-
-                workflowCalculator.Updating += (s, e) =>
-                {
-                    progressFormHost.Note = Analytical.Tas.Query.CancelNote(e.Description);
-                    progressFormHost.Update(e.Description);
-                };
+                // Not a using: the dialog has to be torn down BEFORE the final cancellation check below, and a
+                // using would dispose it after. The Cancel button lives on the dialog's own UI thread, so it can
+                // be clicked at any instant - including after a check placed here. Checking then disposing only
+                // moves that race; disposing then checking closes it, because Dispose closes the form and joins
+                // its thread, so afterwards no further CancelRequested can arrive and any in-flight one has
+                // already run.
+                ProgressFormHost progressFormHost = new ProgressFormHost("Tas Workflow", 1, true, Analytical.Tas.Query.CancelNote(null));
 
                 try
                 {
-                    result = workflowCalculator.Calculate(analyticalModel);
+                    progressFormHost.CancelRequested += (s, e) => cancellationTokenSource.Cancel();
 
-                    // WorkflowCalculator observes the token before each stage and again before it returns, so a
-                    // cancel during the last stage is caught there. This closes the remaining sliver: a click
-                    // landing between that final check and Calculate handing back would otherwise leave
-                    // cancelled false, and Simulate would go on to write results into the Revit document after
-                    // the user asked it to stop.
-                    cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                    WorkflowCalculator workflowCalculator = new WorkflowCalculator(workflowSettings)
+                    {
+                        CancellationToken = cancellationTokenSource.Token
+                    };
+
+                    workflowCalculator.StepsCounted += (s, e) =>
+                    {
+                        progressFormHost.Max = e.Count;
+                    };
+
+                    workflowCalculator.Updating += (s, e) =>
+                    {
+                        progressFormHost.Note = Analytical.Tas.Query.CancelNote(e.Description);
+                        progressFormHost.Update(e.Description);
+                    };
+
+                    result = workflowCalculator.Calculate(analyticalModel);
                 }
                 catch (System.OperationCanceledException)
+                {
+                    cancelled = true;
+                    result = null;
+                }
+                finally
+                {
+                    progressFormHost.Dispose();
+                }
+
+                // Past this point no cancel can be raised, so this observation is final. It catches a click that
+                // landed after WorkflowCalculator's own last check - without it Simulate would go on to write
+                // results into the Revit document after the user had asked it to stop.
+                if (!cancelled && cancellationTokenSource.IsCancellationRequested)
                 {
                     cancelled = true;
                     result = null;
