@@ -88,7 +88,7 @@ namespace SAM.Analytical.Revit.UI
 
                 List<string> names = new List<string>();
                 bool cancelled = false;
-                using (Core.Windows.Forms.ProgressForm progressForm = new Core.Windows.Forms.ProgressForm("Creating Shared Parameters", objects.GetLength(0)))
+                using (Core.Windows.Forms.ProgressForm progressForm = new Core.Windows.Forms.ProgressForm("Removing Shared Parameters", objects.GetLength(0)))
                 {
                     // One step per row and Update pumps the message queue every step, so the form never stops
                     // responding and the click is seen - no ProgressFormHost needed here.
