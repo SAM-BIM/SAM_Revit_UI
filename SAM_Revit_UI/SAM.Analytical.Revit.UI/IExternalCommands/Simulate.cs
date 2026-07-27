@@ -433,25 +433,10 @@ namespace SAM.Analytical.Revit.UI
 
             stopwatch.Stop();
 
-            string hoursString = stopwatch.Elapsed.Hours.ToString();
-            while (hoursString.Length < 2)
-            {
-                hoursString = "0" + hoursString;
-            }
-
-            string minutesString = stopwatch.Elapsed.Minutes.ToString();
-            while (minutesString.Length < 2)
-            {
-                minutesString = "0" + minutesString;
-            }
-
-            string secondsString = stopwatch.Elapsed.Seconds.ToString();
-            while (secondsString.Length < 2)
-            {
-                secondsString = "0" + secondsString;
-            }
-
-            MessageBox.Show(string.Format("Simulation finished.\nTime elapsed: {0}h {1}m {2}s", hoursString, minutesString, secondsString));
+            // Was hand-padded from Elapsed.Hours, which is the hours *component* of the TimeSpan and so wraps
+            // back to 00 after a day - a long enough run reported the wrong time. Query.Duration promotes past
+            // the hour properly and is the same formatter the progress dialog uses, so the two agree.
+            MessageBox.Show(string.Format("Simulation finished.\nTime elapsed: {0}", Core.Windows.Query.Duration(stopwatch.Elapsed)));
 
             return Result.Succeeded;
         }
