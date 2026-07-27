@@ -52,7 +52,7 @@ namespace SAM.Analytical.Revit.UI
             AnalyticalModel result = analyticalModel;
 
             using (CancellationTokenSource cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(externalCancellationToken))
-            using (ProgressFormHost progressFormHost = new ProgressFormHost("Tas Workflow", 1, true, Query.CancelNote(null)))
+            using (ProgressFormHost progressFormHost = new ProgressFormHost("Tas Workflow", 1, true, Analytical.Tas.Query.CancelNote(null)))
             {
                 progressFormHost.CancelRequested += (s, e) => cancellationTokenSource.Cancel();
 
@@ -68,7 +68,7 @@ namespace SAM.Analytical.Revit.UI
 
                 workflowCalculator.Updating += (s, e) =>
                 {
-                    progressFormHost.Note = Query.CancelNote(e.Description);
+                    progressFormHost.Note = Analytical.Tas.Query.CancelNote(e.Description);
                     progressFormHost.Update(e.Description);
                 };
 

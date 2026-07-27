@@ -160,6 +160,11 @@ namespace SAM.Analytical.Revit.UI
 
                     analyticalModel = updateConstructionLayersByPanelType ? analyticalModel.UpdateConstructionLayersByPanelType() : analyticalModel;
 
+                    // Immediately before the delete, not merely at the next stage boundary: cancelling while the
+                    // materials loop or UpdateConstructionLayersByPanelType was running would otherwise still
+                    // erase the user's existing .tbd on the way out, then report the run as cancelled.
+                    cancellationTokenSource.Token.ThrowIfCancellationRequested();
+
                     if (System.IO.File.Exists(path_TBD))
                     {
                         System.IO.File.Delete(path_TBD);
@@ -217,6 +222,13 @@ namespace SAM.Analytical.Revit.UI
 
                         sAMTBDDocument.Save();
                     }
+
+                    // Checking only on the way INTO each stage leaves the last one uncovered: a Cancel clicked
+                    // during "Updating Shading" - the longest stage here, and the one the note tells the user
+                    // to expect to wait through - was recorded by the dialog and then never observed, so the
+                    // workflow started anyway. Observed here, after the document is safely saved, so the click
+                    // is honoured and nothing is left half-written.
+                    cancellationTokenSource.Token.ThrowIfCancellationRequested();
                 }
                 catch (OperationCanceledException)
                 {
