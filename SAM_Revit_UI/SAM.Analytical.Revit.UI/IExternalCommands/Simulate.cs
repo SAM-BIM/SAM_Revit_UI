@@ -127,12 +127,19 @@ namespace SAM.Analytical.Revit.UI
             // and no Revit API call leaves the API thread. Cancellation is observed only BETWEEN COM calls; an
             // in-flight TAS COM call is never interrupted.
             using (System.Threading.CancellationTokenSource cancellationTokenSource = new System.Threading.CancellationTokenSource())
-            using (Core.Windows.Forms.ProgressFormHost progressForm = new Core.Windows.Forms.ProgressFormHost("Preparing Model", 6, true, Analytical.Tas.Query.CancelNote(null)))
             {
-                progressForm.CancelRequested += (s, e) => cancellationTokenSource.Cancel();
+                // The dialog is deliberately not a using: it has to be torn down BEFORE the final cancellation
+                // check below, and a using would dispose it after. Its Cancel button lives on the dialog's own
+                // thread, so a click can land at any instant - checking and then disposing would only move the
+                // race. Dispose closes the form and joins its thread, so once it returns no further
+                // CancelRequested can arrive and any in-flight one has already run. Same ordering as
+                // Modify.RunWorkflow.
+                Core.Windows.Forms.ProgressFormHost progressForm = new Core.Windows.Forms.ProgressFormHost("Preparing Model", 6, true, Analytical.Tas.Query.CancelNote(null));
 
                 try
                 {
+                    progressForm.CancelRequested += (s, e) => cancellationTokenSource.Cancel();
+
                     progressForm.Update("Converting Model");
                     analyticalModel = Convert.ToSAM(document, geometryCalculationMethod, out dictionary);
 
@@ -223,16 +230,24 @@ namespace SAM.Analytical.Revit.UI
                         sAMTBDDocument.Save();
                     }
 
-                    // Checking only on the way INTO each stage leaves the last one uncovered: a Cancel clicked
-                    // during "Updating Shading" - the longest stage here, and the one the note tells the user
-                    // to expect to wait through - was recorded by the dialog and then never observed, so the
-                    // workflow started anyway. Observed here, after the document is safely saved, so the click
-                    // is honoured and nothing is left half-written.
-                    cancellationTokenSource.Token.ThrowIfCancellationRequested();
                 }
                 catch (OperationCanceledException)
                 {
-                    // Reported outside the using so the dialog is gone before the message box appears.
+                    // Reported after the block so the dialog is gone before the message box appears.
+                    cancelled_Preparation = true;
+                }
+                finally
+                {
+                    progressForm.Dispose();
+                }
+
+                // Past this point no cancel can be raised, so this observation is final - and it is the only one
+                // that covers the last stage. Checking on the way INTO each stage leaves "Updating Shading"
+                // uncovered, which is the longest stage here and the one the note tells the user to expect to
+                // wait through: a click there was recorded by the dialog and never observed, so the workflow
+                // started anyway. The document has already been saved by now, so nothing is left half-written.
+                if (!cancelled_Preparation && cancellationTokenSource.IsCancellationRequested)
+                {
                     cancelled_Preparation = true;
                 }
             }
