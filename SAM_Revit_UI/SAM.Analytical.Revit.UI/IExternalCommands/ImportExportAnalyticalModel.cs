@@ -1,4 +1,7 @@
-﻿using Autodesk.Revit.Attributes;
+﻿// SPDX-License-Identifier: LGPL-3.0-or-later
+// Copyright (c) 2020-2026 Michal Dengusiak & Jakub Ziolkowski and contributors
+
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using SAM.Analytical.Revit.UI.Properties;
@@ -122,7 +125,16 @@ namespace SAM.Analytical.Revit.UI
                     List<Tag> tags = analyticalModel.AdjacencyCluster.GetObjects<Tag>();
                     if (tags != null && tags.Count != 0)
                     {
-                        Modify.ImportTags(document, tags);
+                        // ImportTags shows a cancellable dialog of its own. It places tags inside this
+                        // transaction and cannot undo them, so rolling back here covers the whole load -
+                        // levels and model included - rather than leaving a model with no tags on it.
+                        Modify.ImportTags(document, tags, out bool cancelled);
+                        if (cancelled)
+                        {
+                            transaction.RollBack();
+
+                            return Result.Cancelled;
+                        }
                     }
 
                     progressForm.Update("Coping Parameters");
