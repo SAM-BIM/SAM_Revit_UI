@@ -320,8 +320,18 @@ namespace SAM.Analytical.Revit.UI
                 }
             }
 
+            // Set by the loops below when the user clicks Cancel, and read all the way out to the return: a
+            // cancelled insert rolls the Revit transaction back and skips everything that follows it.
+            bool cancelled_Insert = false;
+
             using (Core.Windows.Forms.ProgressForm progressForm = new Core.Windows.Forms.ProgressForm("Inserting Results", results.Count + 5))
             {
+                // Unlike the preparation dialog above, this one does not need a ProgressFormHost: both loops
+                // below step once per result and Update pumps the message queue every step, so the form never
+                // goes long enough without pumping for Windows to ghost it and the click is always seen.
+                progressForm.Cancellable = true;
+                progressForm.Note = "Cancel stops after the current result - nothing is written into the model.";
+
                 progressForm.Update("Processing Revit");
                 if (adjacencyCluster != null && results != null && results.Count != 0)
                 {
@@ -339,6 +349,14 @@ namespace SAM.Analytical.Revit.UI
                         foreach (Space space in results.FindAll(x => x is Space))
                         {
                             progressForm.Update(string.IsNullOrWhiteSpace(space?.Name) ? "???" : space.Name);
+
+                            // Checked after Update, because Update is what pumps the queue and so what turns a
+                            // click made during the previous result into a set flag.
+                            if (progressForm.CancellationRequested)
+                            {
+                                cancelled_Insert = true;
+                                break;
+                            }
 
                             ElementId elementId = space.ElementId();
 
@@ -365,7 +383,19 @@ namespace SAM.Analytical.Revit.UI
 
                         foreach (Core.ISAMObject sAMObject in results.FindAll(x => !(x is Space)))
                         {
+                            // Carries a cancel out of the space loop above without re-indenting this one.
+                            if (cancelled_Insert)
+                            {
+                                break;
+                            }
+
                             progressForm.Update(sAMObject?.Name == null ? "???" : sAMObject.Name);
+
+                            if (progressForm.CancellationRequested)
+                            {
+                                cancelled_Insert = true;
+                                break;
+                            }
 
                             if (sAMObject is SpaceSimulationResult)
                             {
@@ -430,31 +460,46 @@ namespace SAM.Analytical.Revit.UI
                             }
                         }
 
-                        progressForm.Update("Coping Parameters");
+                        // Every SetValues above happened inside this transaction, so rolling back is what
+                        // makes the Note true: the model is left exactly as it was, however far the loops got.
+                        if (cancelled_Insert)
+                        {
+                            transaction.RollBack();
+                        }
+                        else
+                        {
+                            progressForm.Update("Coping Parameters");
 
-                        Revit.Modify.CopySpatialElementParameters(document, Tool.TAS);
+                            Revit.Modify.CopySpatialElementParameters(document, Tool.TAS);
 
-                        progressForm.Update("Finising Transaction");
+                            progressForm.Update("Finising Transaction");
 
-                        transaction.Commit();
+                            transaction.Commit();
+                        }
                     }
                 }
 
-                string path_SAM = System.IO.Path.Combine(outputDirectory, projectName + ".json");
-
-                progressForm.Update("Saving SAM Analytical Model");
-
-                Core.Convert.ToFile(analyticalModel, path_SAM);
-
-                progressForm.Update("Printing Room Data Sheets");
-                if (printRoomDataSheets && analyticalModel != null)
+                // Saving the JSON and printing the room data sheets are the remaining work of this command,
+                // so a cancel skips them too. The simulation itself already ran - its .tbd/.tsd are on disk
+                // either way - and the message at the end says so rather than claiming the run succeeded.
+                if (!cancelled_Insert)
                 {
-                    if (!System.IO.Directory.Exists(outputDirectory))
-                    {
-                        System.IO.Directory.CreateDirectory(outputDirectory);
-                    }
+                    string path_SAM = System.IO.Path.Combine(outputDirectory, projectName + ".json");
 
-                    Analytical.UI.Modify.PrintRoomDataSheets(analyticalModel, outputDirectory);
+                    progressForm.Update("Saving SAM Analytical Model");
+
+                    Core.Convert.ToFile(analyticalModel, path_SAM);
+
+                    progressForm.Update("Printing Room Data Sheets");
+                    if (printRoomDataSheets && analyticalModel != null)
+                    {
+                        if (!System.IO.Directory.Exists(outputDirectory))
+                        {
+                            System.IO.Directory.CreateDirectory(outputDirectory);
+                        }
+
+                        Analytical.UI.Modify.PrintRoomDataSheets(analyticalModel, outputDirectory);
+                    }
                 }
             }
 
@@ -463,6 +508,13 @@ namespace SAM.Analytical.Revit.UI
             // Was hand-padded from Elapsed.Hours, which is the hours *component* of the TimeSpan and so wraps
             // back to 00 after a day - a long enough run reported the wrong time. Query.Duration promotes past
             // the hour properly and is the same formatter the progress dialog uses, so the two agree.
+            if (cancelled_Insert)
+            {
+                MessageBox.Show(string.Format("Results were not written into the model - cancelled.\nThe simulation itself finished and its output is in {0}.\nTime elapsed: {1}", outputDirectory, Core.Windows.Query.Duration(stopwatch.Elapsed)));
+
+                return Result.Cancelled;
+            }
+
             MessageBox.Show(string.Format("Simulation finished.\nTime elapsed: {0}", Core.Windows.Query.Duration(stopwatch.Elapsed)));
 
             return Result.Succeeded;
