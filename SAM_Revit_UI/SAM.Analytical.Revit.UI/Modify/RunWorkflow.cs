@@ -75,6 +75,13 @@ namespace SAM.Analytical.Revit.UI
                 try
                 {
                     result = workflowCalculator.Calculate(analyticalModel);
+
+                    // WorkflowCalculator observes the token before each stage and again before it returns, so a
+                    // cancel during the last stage is caught there. This closes the remaining sliver: a click
+                    // landing between that final check and Calculate handing back would otherwise leave
+                    // cancelled false, and Simulate would go on to write results into the Revit document after
+                    // the user asked it to stop.
+                    cancellationTokenSource.Token.ThrowIfCancellationRequested();
                 }
                 catch (System.OperationCanceledException)
                 {
