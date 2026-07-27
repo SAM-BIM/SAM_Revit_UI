@@ -118,81 +118,117 @@ namespace SAM.Analytical.Revit.UI
             string path_TBD = System.IO.Path.Combine(outputDirectory, projectName + ".tbd");
 
             Dictionary<Guid, ElementId> dictionary = null;
-            using (Core.Windows.Forms.ProgressForm progressForm = new Core.Windows.Forms.ProgressForm("Preparing Model", 6))
+            bool cancelled_Preparation = false;
+
+            // The dialog runs on its own UI thread (ProgressFormHost) because "Converting to TBD" and
+            // "Updating Shading" block this one for minutes, and Windows discards clicks on a window whose
+            // thread has stopped pumping - a Cancel button on Revit's own thread would lose the click and the
+            // run would carry on regardless. The work itself stays here, so no TAS COM object changes apartment
+            // and no Revit API call leaves the API thread. Cancellation is observed only BETWEEN COM calls; an
+            // in-flight TAS COM call is never interrupted.
+            using (System.Threading.CancellationTokenSource cancellationTokenSource = new System.Threading.CancellationTokenSource())
+            using (Core.Windows.Forms.ProgressFormHost progressForm = new Core.Windows.Forms.ProgressFormHost("Preparing Model", 6, true, Analytical.Tas.Query.CancelNote(null)))
             {
-                progressForm.Update("Converting Model");
-                analyticalModel = Convert.ToSAM(document, geometryCalculationMethod, out dictionary);
+                progressForm.CancelRequested += (s, e) => cancellationTokenSource.Cancel();
 
-                if (analyticalModel == null)
+                try
                 {
-                    MessageBox.Show("Could not convert to AnalyticalModel");
-                    return Result.Cancelled;
-                }
+                    progressForm.Update("Converting Model");
+                    analyticalModel = Convert.ToSAM(document, geometryCalculationMethod, out dictionary);
 
-                IEnumerable<Core.IMaterial> materials = Analytical.Query.Materials(analyticalModel.AdjacencyCluster, Analytical.Query.DefaultMaterialLibrary());
-                if (materials != null)
-                {
-                    foreach (Core.IMaterial material in materials)
+                    if (analyticalModel == null)
                     {
-                        if (analyticalModel.HasMaterial(material))
+                        MessageBox.Show("Could not convert to AnalyticalModel");
+                        return Result.Cancelled;
+                    }
+
+                    cancellationTokenSource.Token.ThrowIfCancellationRequested();
+
+                    IEnumerable<Core.IMaterial> materials = Analytical.Query.Materials(analyticalModel.AdjacencyCluster, Analytical.Query.DefaultMaterialLibrary());
+                    if (materials != null)
+                    {
+                        foreach (Core.IMaterial material in materials)
                         {
-                            continue;
+                            if (analyticalModel.HasMaterial(material))
+                            {
+                                continue;
+                            }
+
+                            analyticalModel.AddMaterial(material);
+                        }
+                    }
+
+                    analyticalModel = updateConstructionLayersByPanelType ? analyticalModel.UpdateConstructionLayersByPanelType() : analyticalModel;
+
+                    if (System.IO.File.Exists(path_TBD))
+                    {
+                        System.IO.File.Delete(path_TBD);
+                    }
+
+                    List<int> hoursOfYear = Analytical.Query.DefaultHoursOfYear();
+
+                    //Run Solar Calculation for cooling load
+
+                    progressForm.Update("Solar Calculations");
+                    cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                    if (solarCalculationMethod != SolarCalculationMethod.None)
+                    {
+                        SolarCalculator.Modify.Simulate(analyticalModel, hoursOfYear.ConvertAll(x => new DateTime(2018, 1, 1).AddHours(x)), false, Core.Tolerance.MacroDistance, Core.Tolerance.MacroDistance, 0.012, Core.Tolerance.Distance);
+                    }
+
+                    using (SAMTBDDocument sAMTBDDocument = new SAMTBDDocument(path_TBD))
+                    {
+                        TBD.TBDDocument tBDDocument = sAMTBDDocument.TBDDocument;
+
+                        progressForm.Update("Updating WeatherData");
+                        cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                        Weather.Tas.Modify.UpdateWeatherData(tBDDocument, weatherData, analyticalModel == null ? 0 : analyticalModel.AdjacencyCluster.BuildingHeight());
+
+                        TBD.Calendar calendar = tBDDocument.Building.GetCalendar();
+
+                        List<TBD.dayType> dayTypes = Query.DayTypes(calendar);
+                        if (dayTypes.Find(x => x.name == "HDD") == null)
+                        {
+                            TBD.dayType dayType = calendar.AddDayType();
+                            dayType.name = "HDD";
                         }
 
-                        analyticalModel.AddMaterial(material);
+                        if (dayTypes.Find(x => x.name == "CDD") == null)
+                        {
+                            TBD.dayType dayType = calendar.AddDayType();
+                            dayType.name = "CDD";
+                        }
+
+                        progressForm.Note = Analytical.Tas.Query.CancelNote("Converting to TBD");
+                        progressForm.Update("Converting to TBD");
+                        cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                        Tas.Convert.ToTBD(analyticalModel, tBDDocument);
+                        progressForm.Note = Analytical.Tas.Query.CancelNote(null);
+
+                        progressForm.Update("Updating Zones");
+                        cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                        Tas.Modify.UpdateZones(tBDDocument.Building, analyticalModel, true);
+
+                        progressForm.Note = Analytical.Tas.Query.CancelNote("Updating Shading");
+                        progressForm.Update("Updating Shading");
+                        cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                        simulate = Tas.Modify.UpdateShading(tBDDocument, analyticalModel);
+                        progressForm.Note = Analytical.Tas.Query.CancelNote(null);
+
+                        sAMTBDDocument.Save();
                     }
                 }
-
-                analyticalModel = updateConstructionLayersByPanelType ? analyticalModel.UpdateConstructionLayersByPanelType() : analyticalModel;
-
-                if (System.IO.File.Exists(path_TBD))
+                catch (OperationCanceledException)
                 {
-                    System.IO.File.Delete(path_TBD);
+                    // Reported outside the using so the dialog is gone before the message box appears.
+                    cancelled_Preparation = true;
                 }
+            }
 
-                List<int> hoursOfYear = Analytical.Query.DefaultHoursOfYear();
-
-                //Run Solar Calculation for cooling load
-
-                progressForm.Update("Solar Calculations");
-                if (solarCalculationMethod != SolarCalculationMethod.None)
-                {
-                    SolarCalculator.Modify.Simulate(analyticalModel, hoursOfYear.ConvertAll(x => new DateTime(2018, 1, 1).AddHours(x)), false, Core.Tolerance.MacroDistance, Core.Tolerance.MacroDistance, 0.012, Core.Tolerance.Distance);
-                }
-
-                using (SAMTBDDocument sAMTBDDocument = new SAMTBDDocument(path_TBD))
-                {
-                    TBD.TBDDocument tBDDocument = sAMTBDDocument.TBDDocument;
-
-                    progressForm.Update("Updating WeatherData");
-                    Weather.Tas.Modify.UpdateWeatherData(tBDDocument, weatherData, analyticalModel == null ? 0 : analyticalModel.AdjacencyCluster.BuildingHeight());
-
-                    TBD.Calendar calendar = tBDDocument.Building.GetCalendar();
-
-                    List<TBD.dayType> dayTypes = Query.DayTypes(calendar);
-                    if (dayTypes.Find(x => x.name == "HDD") == null)
-                    {
-                        TBD.dayType dayType = calendar.AddDayType();
-                        dayType.name = "HDD";
-                    }
-
-                    if (dayTypes.Find(x => x.name == "CDD") == null)
-                    {
-                        TBD.dayType dayType = calendar.AddDayType();
-                        dayType.name = "CDD";
-                    }
-
-                    progressForm.Update("Converting to TBD");
-                    Tas.Convert.ToTBD(analyticalModel, tBDDocument);
-
-                    progressForm.Update("Updating Zones");
-                    Tas.Modify.UpdateZones(tBDDocument.Building, analyticalModel, true);
-
-                    progressForm.Update("Updating Shading");
-                    simulate = Tas.Modify.UpdateShading(tBDDocument, analyticalModel);
-
-                    sAMTBDDocument.Save();
-                }
+            if (cancelled_Preparation)
+            {
+                MessageBox.Show("Cancelled while preparing the model. A partially written .tbd may remain in the output directory.");
+                return Result.Cancelled;
             }
 
             List<DesignDay> heatingDesignDays = new List<DesignDay>() { Analytical.Query.HeatingDesignDay(weatherData) };
@@ -229,7 +265,16 @@ namespace SAM.Analytical.Revit.UI
                 SimulateTo = 1
             };
 
-            analyticalModel = Analytical.UI.WPF.Modify.RunWorkflow(analyticalModel, workflowSettings);
+            // Was Analytical.UI.WPF.Modify.RunWorkflow, which runs the workflow with no progress dialog and no
+            // cancellation at all - a silent multi-minute freeze. This overload reports every stage and carries
+            // a Cancel button; see Modify.RunWorkflow for why it is not shared with the Grasshopper twin.
+            analyticalModel = Modify.RunWorkflow(analyticalModel, workflowSettings, System.Threading.CancellationToken.None, out bool cancelled_Workflow);
+
+            if (cancelled_Workflow)
+            {
+                MessageBox.Show("Workflow cancelled. Partially written .tbd/.tsd files may remain in the output directory.");
+                return Result.Cancelled;
+            }
 
             List<Core.ISAMObject> results = null;
 
