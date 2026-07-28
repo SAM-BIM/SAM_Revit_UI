@@ -1,4 +1,7 @@
-﻿using Autodesk.Revit.DB;
+﻿// SPDX-License-Identifier: LGPL-3.0-or-later
+// Copyright (c) 2020-2026 Michal Dengusiak & Jakub Ziolkowski and contributors
+
+using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Analysis;
 using SAM.Core.Revit;
 using SAM.Geometry.Object.Spatial;
