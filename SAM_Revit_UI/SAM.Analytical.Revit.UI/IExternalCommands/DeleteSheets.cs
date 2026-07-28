@@ -43,15 +43,27 @@ namespace SAM.Analytical.Revit.UI
 
             List<int> ids = new List<int>() { 725518, 725533, 802983, 805316, 835480, 1007139, 1008572 };
 
-            using (Core.Windows.Forms.TreeViewForm<ViewSheet> treeViewForm = new Core.Windows.Forms.TreeViewForm<ViewSheet>("Select Sheets", viewSheets, (ViewSheet x) => string.Format("{0} - {1}", x.SheetNumber, x.Name), null, (ViewSheet x) => !ids.Contains(System.Convert.ToInt32(x.Id.Value))))
+            Core.UI.WPF.MultipleSelectionTreeViewWindow treeViewWindow = new Core.UI.WPF.MultipleSelectionTreeViewWindow { Title = "Select Sheets" };
+            treeViewWindow.GettingText += (object sender, Core.UI.WPF.GettingTextEventArgs e) =>
             {
-                if (treeViewForm.ShowDialog() != System.Windows.Forms.DialogResult.OK)
-                {
-                    return Result.Cancelled;
-                }
+                ViewSheet viewSheet_Temp = e?.Object as ViewSheet;
+                e.Text = viewSheet_Temp == null ? null : string.Format("{0} - {1}", viewSheet_Temp.SheetNumber, viewSheet_Temp.Name);
+            };
+            treeViewWindow.GettingChecked += (object sender, Core.UI.WPF.GettingCheckedEventArgs e) =>
+            {
+                ViewSheet viewSheet_Temp = e?.Object as ViewSheet;
+                e.Checked = viewSheet_Temp != null && !ids.Contains(System.Convert.ToInt32(viewSheet_Temp.Id.Value));
+            };
+            treeViewWindow.SetObjects(viewSheets);
 
-                viewSheets = treeViewForm.SelectedItems;
+            new System.Windows.Interop.WindowInteropHelper(treeViewWindow).Owner = commandData.Application.MainWindowHandle;
+
+            if (treeViewWindow.ShowDialog() != true)
+            {
+                return Result.Cancelled;
             }
+
+            viewSheets = treeViewWindow.GetObjects<ViewSheet>();
 
             if (viewSheets == null || viewSheets.Count == 0)
             {

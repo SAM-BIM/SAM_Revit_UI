@@ -63,15 +63,24 @@ namespace SAM.Analytical.Revit.UI
             }
 
             List<string> templateNames = null;
-            using (Core.Windows.Forms.TreeViewForm<ViewPlan> treeViewForm = new Core.Windows.Forms.TreeViewForm<ViewPlan>("Select Templates", viewPlans, (ViewPlan x) => x.Name, null, (ViewPlan x) => x.Name == "Cooling Load" || x.Name == "Heating Load"))
-            {
-                if (treeViewForm.ShowDialog() != DialogResult.OK)
-                {
-                    return Result.Cancelled;
-                }
 
-                templateNames = treeViewForm.SelectedItems?.ConvertAll(x => x.Name);
+            Core.UI.WPF.MultipleSelectionTreeViewWindow treeViewWindow = new Core.UI.WPF.MultipleSelectionTreeViewWindow { Title = "Select Templates" };
+            treeViewWindow.GettingText += (object sender, Core.UI.WPF.GettingTextEventArgs e) => e.Text = (e?.Object as ViewPlan)?.Name;
+            treeViewWindow.GettingChecked += (object sender, Core.UI.WPF.GettingCheckedEventArgs e) =>
+            {
+                string name = (e?.Object as ViewPlan)?.Name;
+                e.Checked = name == "Cooling Load" || name == "Heating Load";
+            };
+            treeViewWindow.SetObjects(viewPlans);
+
+            new System.Windows.Interop.WindowInteropHelper(treeViewWindow).Owner = commandData.Application.MainWindowHandle;
+
+            if (treeViewWindow.ShowDialog() != true)
+            {
+                return Result.Cancelled;
             }
+
+            templateNames = treeViewWindow.GetObjects<ViewPlan>()?.ConvertAll(x => x.Name);
 
             using (Transaction transaction = new Transaction(document, "Create Sheets"))
             {
