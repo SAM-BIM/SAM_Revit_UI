@@ -1,4 +1,6 @@
-﻿using Autodesk.Revit.Attributes;
+﻿// SPDX-License-Identifier: LGPL-3.0-or-later
+// Copyright (c) 2020-2026 Michal Dengusiak & Jakub Ziolkowski and contributors
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using SAM.Analytical.Revit.UI.Properties;
@@ -55,11 +57,7 @@ namespace SAM.Analytical.Revit.UI
 
             List<Element> elements_Temp = new FilteredElementCollector(document).WherePasses(logicalOrFilter).WhereElementIsNotElementType().ToList();
 
-#if Revit2017 || Revit2018 || Revit2019 || Revit2020 || Revit2021 || Revit2022 || Revit2023 || Revit2024
-            using (Core.Windows.Forms.TreeViewForm<Element> treeViewForm = new Core.Windows.Forms.TreeViewForm<Element>("Select Elements", elements, (Element x) => string.Format("{0} [{1}]", x.Name, x.Id.IntegerValue), (Element x) => x.Category.Name, (Element x) =>x.Id.IntegerValue != 311))
-#else
             using (Core.Windows.Forms.TreeViewForm<Element> treeViewForm = new Core.Windows.Forms.TreeViewForm<Element>("Select Elements", elements_Temp, (Element x) => string.Format("{0} [{1}]", x.Name, x.Id.Value), (Element x) => x.Category.Name, (Element x) => x.Id.Value != 311))
-#endif
             {
                 treeViewForm.CollapseAll();
                 if (treeViewForm.ShowDialog() != System.Windows.Forms.DialogResult.OK)
