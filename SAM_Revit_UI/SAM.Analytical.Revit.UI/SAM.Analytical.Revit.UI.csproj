@@ -229,10 +229,12 @@
       set SAM_DIR=$(APPDATA)\SAM\%25Version%25
       if not exist "%25SAM_DIR%25" mkdir "%25SAM_DIR%25"
 
-      Copy /Y "$(SolutionDir)..\SAM_OCCT\build\SAM.Occt.Native.dll" "$(TargetDir)SAM.Occt.Native.dll"
-      Copy /Y "$(SolutionDir)..\SAM_OCCT\build\TKernel.dll" "$(TargetDir)TKernel.dll"
-      Copy /Y "$(SolutionDir)..\SAM_OCCT\build\TK*.dll" "$(TargetDir)TK*.dll"
-      Copy /Y "$(SolutionDir)..\SAM_OCCT\build\tbb*.dll" "$(TargetDir)tbb*.dll"
+      ::The native OCCT kernel is only present when SAM_OCCT built it (build-native.ps1).
+      ::CI sets SAM_OCCT_SKIP_NATIVE_BUILD=true and builds the managed assemblies only, so
+      ::every native copy below must be 'if exist' guarded or the post-build event fails.
+      if exist "$(SolutionDir)..\SAM_OCCT\build\SAM.Occt.Native.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\SAM.Occt.Native.dll" "$(TargetDir)SAM.Occt.Native.dll"
+      if exist "$(SolutionDir)..\SAM_OCCT\build\TK*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\TK*.dll" "$(TargetDir)TK*.dll"
+      if exist "$(SolutionDir)..\SAM_OCCT\build\tbb*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\tbb*.dll" "$(TargetDir)tbb*.dll"
       if exist "$(SolutionDir)..\SAM_OCCT\build\freetype*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\freetype*.dll" "$(TargetDir)freetype*.dll"
       if exist "$(SolutionDir)..\SAM_OCCT\build\FreeImage*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\FreeImage*.dll" "$(TargetDir)FreeImage*.dll"
       if exist "$(SolutionDir)..\SAM_OCCT\build\jemalloc*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\jemalloc*.dll" "$(TargetDir)jemalloc*.dll"
