@@ -85,8 +85,14 @@
         <Reference Include="SAM.Analytical.Tas.TPD">
           <HintPath>..\..\..\SAM_Tas\build\SAM.Analytical.Tas.TPD.dll</HintPath>
         </Reference>
-        <Reference Include="SAM.Analytical.Topologic">
-            <HintPath>..\..\..\SAM_Topologic\build\SAM.Analytical.Topologic.dll</HintPath>
+        <Reference Include="SAM.Analytical.OCCT">
+            <HintPath>..\..\..\SAM_OCCT\build\SAM.Analytical.OCCT.dll</HintPath>
+        </Reference>
+        <Reference Include="SAM.Core.OCCT">
+            <HintPath>..\..\..\SAM_OCCT\build\SAM.Core.OCCT.dll</HintPath>
+        </Reference>
+        <Reference Include="SAM.Geometry.OCCT">
+            <HintPath>..\..\..\SAM_OCCT\build\SAM.Geometry.OCCT.dll</HintPath>
         </Reference>
         <Reference Include="SAM.Analytical.UI">
             <HintPath>..\..\..\SAM_UI\build\SAM.Analytical.UI.dll</HintPath>
@@ -129,9 +135,6 @@
         <Reference Include="SAM.Weather.Tas, Version=1.0.8108.16693, Culture=neutral, processorArchitecture=MSIL">
             <SpecificVersion>False</SpecificVersion>
             <HintPath>..\..\..\SAM_Tas\build\SAM.Weather.Tas.dll</HintPath>
-        </Reference>
-        <Reference Include="TopologicNET">
-            <HintPath>..\..\references\TopologicNET.dll</HintPath>
         </Reference>
     </ItemGroup>
 	
@@ -226,10 +229,35 @@
       set SAM_DIR=$(APPDATA)\SAM\%25Version%25
       if not exist "%25SAM_DIR%25" mkdir "%25SAM_DIR%25"
 
-      Copy /Y "$(SolutionDir)references\TopologicCore.dll" "$(TargetDir)TopologicCore.dll"
-      Copy /Y "$(SolutionDir)references\TK*.dll" "$(TargetDir)TK*.dll"
+      ::The native OCCT kernel is only present when SAM_OCCT built it (build-native.ps1).
+      ::CI sets SAM_OCCT_SKIP_NATIVE_BUILD=true and builds the managed assemblies only, so
+      ::every native copy below must be 'if exist' guarded or the post-build event fails.
+      if exist "$(SolutionDir)..\SAM_OCCT\build\SAM.Occt.Native.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\SAM.Occt.Native.dll" "$(TargetDir)SAM.Occt.Native.dll"
+      if exist "$(SolutionDir)..\SAM_OCCT\build\TK*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\TK*.dll" "$(TargetDir)TK*.dll"
+      if exist "$(SolutionDir)..\SAM_OCCT\build\tbb*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\tbb*.dll" "$(TargetDir)tbb*.dll"
+      if exist "$(SolutionDir)..\SAM_OCCT\build\freetype*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\freetype*.dll" "$(TargetDir)freetype*.dll"
+      if exist "$(SolutionDir)..\SAM_OCCT\build\FreeImage*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\FreeImage*.dll" "$(TargetDir)FreeImage*.dll"
+      if exist "$(SolutionDir)..\SAM_OCCT\build\jemalloc*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\jemalloc*.dll" "$(TargetDir)jemalloc*.dll"
+      if exist "$(SolutionDir)..\SAM_OCCT\build\av*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\av*.dll" "$(TargetDir)av*.dll"
+      if exist "$(SolutionDir)..\SAM_OCCT\build\swscale*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\swscale*.dll" "$(TargetDir)swscale*.dll"
+      if exist "$(SolutionDir)..\SAM_OCCT\build\openvr_api*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\openvr_api*.dll" "$(TargetDir)openvr_api*.dll"
+      if exist "$(SolutionDir)..\SAM_OCCT\build\zlib*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\zlib*.dll" "$(TargetDir)zlib*.dll"
+      if exist "$(SolutionDir)..\SAM_OCCT\build\msvcp140*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\msvcp140*.dll" "$(TargetDir)msvcp140*.dll"
+      if exist "$(SolutionDir)..\SAM_OCCT\build\vcruntime140*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\vcruntime140*.dll" "$(TargetDir)vcruntime140*.dll"
+      if exist "$(SolutionDir)..\SAM_OCCT\build\concrt140*.dll" Copy /Y "$(SolutionDir)..\SAM_OCCT\build\concrt140*.dll" "$(TargetDir)concrt140*.dll"
+
+      if exist "$(TargetDir)SAM.Analytical.Topologic.dll" del /Q "$(TargetDir)SAM.Analytical.Topologic.dll"
+      if exist "$(TargetDir)SAM.Core.Topologic.dll" del /Q "$(TargetDir)SAM.Core.Topologic.dll"
+      if exist "$(TargetDir)SAM.Geometry.Topologic.dll" del /Q "$(TargetDir)SAM.Geometry.Topologic.dll"
+      if exist "$(TargetDir)TopologicCore.dll" del /Q "$(TargetDir)TopologicCore.dll"
+      if exist "$(TargetDir)TopologicNET.dll" del /Q "$(TargetDir)TopologicNET.dll"
 
       copy "$(TargetDir)*.dll" "%25SAM_DIR%25"
+      if exist "%25SAM_DIR%25\SAM.Analytical.Topologic.dll" del /Q "%25SAM_DIR%25\SAM.Analytical.Topologic.dll"
+      if exist "%25SAM_DIR%25\SAM.Core.Topologic.dll" del /Q "%25SAM_DIR%25\SAM.Core.Topologic.dll"
+      if exist "%25SAM_DIR%25\SAM.Geometry.Topologic.dll" del /Q "%25SAM_DIR%25\SAM.Geometry.Topologic.dll"
+      if exist "%25SAM_DIR%25\TopologicCore.dll" del /Q "%25SAM_DIR%25\TopologicCore.dll"
+      if exist "%25SAM_DIR%25\TopologicNET.dll" del /Q "%25SAM_DIR%25\TopologicNET.dll"
       ::copy "$(TargetDir)*.exe" "%25SAM_DIR%25"</PostBuildEvent>
   </PropertyGroup>
 </Project>
