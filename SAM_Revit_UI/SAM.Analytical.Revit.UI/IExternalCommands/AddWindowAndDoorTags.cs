@@ -73,15 +73,21 @@ namespace SAM.Analytical.Revit.UI
 
             List<string> templateNames = new List<string> { "Heating Load" };
 
-            using (Core.Windows.Forms.TreeViewForm<View> treeViewForm = new Core.Windows.Forms.TreeViewForm<View>("Select Templates", views, (View view) => view.Name, null, (View view) => templateNames.Contains(view.Name)))
-            {
-                if (treeViewForm.ShowDialog() != System.Windows.Forms.DialogResult.OK)
-                {
-                    return Result.Cancelled;
-                }
+            List<string> templateNames_Checked = templateNames;
 
-                templateNames = treeViewForm.SelectedItems?.ConvertAll(x => x.Name);
+            Core.UI.WPF.MultipleSelectionTreeViewWindow treeViewWindow = new Core.UI.WPF.MultipleSelectionTreeViewWindow { Title = "Select Templates" };
+            treeViewWindow.GettingText += (object sender, Core.UI.WPF.GettingTextEventArgs e) => e.Text = (e?.Object as View)?.Name;
+            treeViewWindow.GettingChecked += (object sender, Core.UI.WPF.GettingCheckedEventArgs e) => e.Checked = templateNames_Checked.Contains((e?.Object as View)?.Name);
+            treeViewWindow.SetObjects(views);
+
+            new System.Windows.Interop.WindowInteropHelper(treeViewWindow).Owner = externalCommandData.Application.MainWindowHandle;
+
+            if (treeViewWindow.ShowDialog() != true)
+            {
+                return Result.Cancelled;
             }
+
+            templateNames = treeViewWindow.GetObjects<View>()?.ConvertAll(x => x.Name);
 
             if (templateNames == null || templateNames.Count == 0)
             {
