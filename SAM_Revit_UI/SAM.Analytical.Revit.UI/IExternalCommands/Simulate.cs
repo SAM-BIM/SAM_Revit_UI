@@ -248,7 +248,12 @@ namespace SAM.Analytical.Revit.UI
                 // uncovered, which is the longest stage here and the one the note tells the user to expect to
                 // wait through: a click there was recorded by the dialog and never observed, so the workflow
                 // started anyway. The document has already been saved by now, so nothing is left half-written.
-                if (!cancelled_Preparation && cancellationTokenSource.IsCancellationRequested)
+                //
+                // "Final" holds only once the host confirms it shut down cleanly. If it could not - the dialog
+                // thread was not joined, or a handler did not quiesce - that thread is still live and a click it
+                // has queued may never have been observed, so success cannot be claimed and the safe direction
+                // is to report the preparation as cancelled.
+                if (!cancelled_Preparation && (cancellationTokenSource.IsCancellationRequested || !progressForm.ShutdownCompleted))
                 {
                     cancelled_Preparation = true;
                 }

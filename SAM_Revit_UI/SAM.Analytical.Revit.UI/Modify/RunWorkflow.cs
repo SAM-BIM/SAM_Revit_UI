@@ -96,7 +96,13 @@ namespace SAM.Analytical.Revit.UI
                 // Past this point no cancel can be raised, so this observation is final. It catches a click that
                 // landed after WorkflowCalculator's own last check - without it Simulate would go on to write
                 // results into the Revit document after the user had asked it to stop.
-                if (!cancelled && cancellationTokenSource.IsCancellationRequested)
+                //
+                // "Final" holds only once the host confirms it shut down cleanly. If it could not - the dialog
+                // thread was not joined, or a handler did not quiesce - that thread is still live and a click it
+                // has queued may never have been observed, so success cannot be claimed and the safe direction
+                // is to report the run as cancelled. The expensive artifacts (.tbd/.tsd) are on disk either way;
+                // what is given up is only the in-memory handoff, which a rerun reproduces.
+                if (!cancelled && (cancellationTokenSource.IsCancellationRequested || !progressFormHost.ShutdownCompleted))
                 {
                     cancelled = true;
                     result = null;
