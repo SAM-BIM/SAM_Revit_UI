@@ -141,7 +141,7 @@ namespace SAM.Analytical.Revit.UI
 
                     break;
 
-                case GeometryCalculationMethod.Topologic:
+                case GeometryCalculationMethod.OCCT:
                     using (Transaction transaction = new Transaction(document, "Convert Model"))
                     {
                         transaction.Start();
@@ -160,8 +160,8 @@ namespace SAM.Analytical.Revit.UI
                     }
 
                     spaces = Revit.Convert.ToSAM<Space>(document, convertSettings);
-                    adjacencyCluster_Temp = Topologic.Create.AdjacencyCluster(spaces, panels, out List<global::Topologic.Topology> topologies, out List<Panel> redundantPanels);
-                    panels_Temp = adjacencyCluster_Temp.GetPanels();
+                    adjacencyCluster_Temp = OCCT.Create.AdjacencyCluster(spaces, panels, out _);
+                    panels_Temp = adjacencyCluster_Temp?.GetPanels();
                     if (panels_Temp != null && panels_Temp.Count != 0)
                     {
                         List<Aperture> apertures = new List<Aperture>();
