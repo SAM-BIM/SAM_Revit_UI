@@ -96,7 +96,9 @@ namespace SAM.Analytical.Revit.UI
                 projectName = simulateWindow.ProjectName;
                 outputDirectory = simulateWindow.OutputDirectory;
                 unmetHours = simulateWindow.UnmetHours;
-                weatherData = simulateWindow.WeatherData;
+                // SelectedWeatherData, not WeatherData - see the note on those properties. This is the same
+                // pairing SAM.Analytical.UI.WPF.Modify.Simulate uses: seed with one, read back the other.
+                weatherData = simulateWindow.SelectedWeatherData;
                 solarCalculationMethod = simulateWindow.SolarCalculationMethod;
                 geometryCalculationMethod = simulateWindow.GeometryCalculationMethod;
                 updateConstructionLayersByPanelType = simulateWindow.UpdateConstructionLayersByPanelType;
