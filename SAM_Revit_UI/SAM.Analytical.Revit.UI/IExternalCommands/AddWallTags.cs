@@ -1,4 +1,6 @@
-﻿using Autodesk.Revit.Attributes;
+﻿// SPDX-License-Identifier: LGPL-3.0-or-later
+// Copyright (c) 2020-2026 Michal Dengusiak & Jakub Ziolkowski and contributors
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using SAM.Analytical.Revit.UI.Properties;
@@ -100,11 +102,7 @@ namespace SAM.Analytical.Revit.UI
                 return Result.Failed;
             }
 
-#if Revit2017 || Revit2018 || Revit2019 || Revit2020
-            minLength = UnitUtils.ConvertToInternalUnits(minLength, DisplayUnitType.DUT_METERS);
-#else
             minLength = UnitUtils.ConvertToInternalUnits(minLength, UnitTypeId.Meters);
-#endif
 
             for (int i = walls.Count - 1; i >= 0; i--)
             {

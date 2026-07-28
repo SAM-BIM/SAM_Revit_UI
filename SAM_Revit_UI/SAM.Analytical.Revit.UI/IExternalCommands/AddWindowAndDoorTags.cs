@@ -1,4 +1,6 @@
-﻿using Autodesk.Revit.Attributes;
+﻿// SPDX-License-Identifier: LGPL-3.0-or-later
+// Copyright (c) 2020-2026 Michal Dengusiak & Jakub Ziolkowski and contributors
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using SAM.Analytical.Revit.UI.Properties;
@@ -87,13 +89,8 @@ namespace SAM.Analytical.Revit.UI
             }
 
             List<Tuple<ElementId, List<FamilyInstance>>> tuples = new List<Tuple<ElementId, List<FamilyInstance>>>();
-#if Revit2017 || Revit2018 || Revit2019 || Revit2020 || Revit2021 || Revit2022 || Revit2023 || Revit2024
-            tuples.Add(new Tuple<ElementId, List<FamilyInstance>>(elementTypes_WindowTags.Find(x => x.Id.IntegerValue == 775113)?.Id, familyInstances_Window));
-            tuples.Add(new Tuple<ElementId, List<FamilyInstance>>(elementTypes_DoorTags.Find(x => x.Id.IntegerValue == 775351)?.Id, familyInstances_Door));
-#else
             tuples.Add(new Tuple<ElementId, List<FamilyInstance>>(elementTypes_WindowTags.Find(x => x.Id.Value == 775113)?.Id, familyInstances_Window));
             tuples.Add(new Tuple<ElementId, List<FamilyInstance>>(elementTypes_DoorTags.Find(x => x.Id.Value == 775351)?.Id, familyInstances_Door));
-#endif
 
             using (Transaction transaction = new Transaction(document, "Add Window and Door Tags"))
             {
