@@ -91,7 +91,7 @@ namespace SAM.Analytical.Revit.UI
                 using (Core.Windows.Forms.ProgressForm progressForm = new Core.Windows.Forms.ProgressForm("Removing Shared Parameters", objects.GetLength(0)))
                 {
                     // One step per row and Update pumps the message queue every step, so the form never stops
-                    // responding and the click is seen - no ProgressFormHost needed here.
+                    // responding and the click is seen - no host thread of its own needed here.
                     progressForm.Cancellable = true;
                     progressForm.Note = "Cancel stops after the current parameter - nothing is removed.";
 

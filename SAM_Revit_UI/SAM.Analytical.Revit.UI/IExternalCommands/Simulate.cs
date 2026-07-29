@@ -122,7 +122,7 @@ namespace SAM.Analytical.Revit.UI
             Dictionary<Guid, ElementId> dictionary = null;
             bool cancelled_Preparation = false;
 
-            // The dialog runs on its own UI thread (ProgressFormHost) because "Converting to TBD" and
+            // The dialog runs on its own UI thread (ProgressWindowHost) because "Converting to TBD" and
             // "Updating Shading" block this one for minutes, and Windows discards clicks on a window whose
             // thread has stopped pumping - a Cancel button on Revit's own thread would lose the click and the
             // run would carry on regardless. The work itself stays here, so no TAS COM object changes apartment
@@ -133,16 +133,21 @@ namespace SAM.Analytical.Revit.UI
                 // The dialog is deliberately not a using: it has to be torn down BEFORE the final cancellation
                 // check below, and a using would dispose it after. Its Cancel button lives on the dialog's own
                 // thread, so a click can land at any instant - checking and then disposing would only move the
-                // race. Dispose closes the form and joins its thread, so once it returns no further
+                // race. Dispose closes the window and joins its thread, so once it returns no further
                 // CancelRequested can arrive and any in-flight one has already run. Same ordering as
                 // Modify.RunWorkflow.
-                Core.Windows.Forms.ProgressFormHost progressForm = new Core.Windows.Forms.ProgressFormHost("Preparing Model", 6, true, Analytical.Tas.Query.CancelNote(null));
+                //
+                // No owner is set, unlike every other window this command opens over Revit. A WPF owner must
+                // live on the same thread as the window it owns, and this one deliberately does not - that is
+                // the whole point of the host. ProgressWindowHost sets Topmost instead, which is what keeps it
+                // in front of a Revit window that has stopped painting.
+                Core.UI.WPF.ProgressWindowHost progressWindowHost = new Core.UI.WPF.ProgressWindowHost("Preparing Model", 6, true, Analytical.Tas.Query.CancelNote(null));
 
                 try
                 {
-                    progressForm.CancelRequested += (s, e) => cancellationTokenSource.Cancel();
+                    progressWindowHost.CancelRequested += (s, e) => cancellationTokenSource.Cancel();
 
-                    progressForm.Update("Converting Model");
+                    progressWindowHost.Update("Converting Model");
                     analyticalModel = Convert.ToSAM(document, geometryCalculationMethod, out dictionary);
 
                     if (analyticalModel == null)
@@ -183,7 +188,7 @@ namespace SAM.Analytical.Revit.UI
 
                     //Run Solar Calculation for cooling load
 
-                    progressForm.Update("Solar Calculations");
+                    progressWindowHost.Update("Solar Calculations");
                     cancellationTokenSource.Token.ThrowIfCancellationRequested();
                     if (solarCalculationMethod != SolarCalculationMethod.None)
                     {
@@ -194,7 +199,7 @@ namespace SAM.Analytical.Revit.UI
                     {
                         TBD.TBDDocument tBDDocument = sAMTBDDocument.TBDDocument;
 
-                        progressForm.Update("Updating WeatherData");
+                        progressWindowHost.Update("Updating WeatherData");
                         cancellationTokenSource.Token.ThrowIfCancellationRequested();
                         Weather.Tas.Modify.UpdateWeatherData(tBDDocument, weatherData, analyticalModel == null ? 0 : analyticalModel.AdjacencyCluster.BuildingHeight());
 
@@ -213,21 +218,21 @@ namespace SAM.Analytical.Revit.UI
                             dayType.name = "CDD";
                         }
 
-                        progressForm.Note = Analytical.Tas.Query.CancelNote("Converting to TBD");
-                        progressForm.Update("Converting to TBD");
+                        progressWindowHost.Note = Analytical.Tas.Query.CancelNote("Converting to TBD");
+                        progressWindowHost.Update("Converting to TBD");
                         cancellationTokenSource.Token.ThrowIfCancellationRequested();
                         Tas.Convert.ToTBD(analyticalModel, tBDDocument);
-                        progressForm.Note = Analytical.Tas.Query.CancelNote(null);
+                        progressWindowHost.Note = Analytical.Tas.Query.CancelNote(null);
 
-                        progressForm.Update("Updating Zones");
+                        progressWindowHost.Update("Updating Zones");
                         cancellationTokenSource.Token.ThrowIfCancellationRequested();
                         Tas.Modify.UpdateZones(tBDDocument.Building, analyticalModel, true);
 
-                        progressForm.Note = Analytical.Tas.Query.CancelNote("Updating Shading");
-                        progressForm.Update("Updating Shading");
+                        progressWindowHost.Note = Analytical.Tas.Query.CancelNote("Updating Shading");
+                        progressWindowHost.Update("Updating Shading");
                         cancellationTokenSource.Token.ThrowIfCancellationRequested();
                         simulate = Tas.Modify.UpdateShading(tBDDocument, analyticalModel);
-                        progressForm.Note = Analytical.Tas.Query.CancelNote(null);
+                        progressWindowHost.Note = Analytical.Tas.Query.CancelNote(null);
 
                         sAMTBDDocument.Save();
                     }
@@ -240,7 +245,7 @@ namespace SAM.Analytical.Revit.UI
                 }
                 finally
                 {
-                    progressForm.Dispose();
+                    progressWindowHost.Dispose();
                 }
 
                 // Past this point no cancel can be raised, so this observation is final - and it is the only one
@@ -253,7 +258,7 @@ namespace SAM.Analytical.Revit.UI
                 // thread was not joined, or a handler did not quiesce - that thread is still live and a click it
                 // has queued may never have been observed, so success cannot be claimed and the safe direction
                 // is to report the preparation as cancelled.
-                if (!cancelled_Preparation && (cancellationTokenSource.IsCancellationRequested || !progressForm.ShutdownCompleted))
+                if (!cancelled_Preparation && (cancellationTokenSource.IsCancellationRequested || !progressWindowHost.ShutdownCompleted))
                 {
                     cancelled_Preparation = true;
                 }
@@ -333,7 +338,7 @@ namespace SAM.Analytical.Revit.UI
 
             using (Core.Windows.Forms.ProgressForm progressForm = new Core.Windows.Forms.ProgressForm("Inserting Results", results.Count + 5))
             {
-                // Unlike the preparation dialog above, this one does not need a ProgressFormHost: both loops
+                // Unlike the preparation dialog above, this one does not need a host thread of its own: both loops
                 // below step once per result and Update pumps the message queue every step, so the form never
                 // goes long enough without pumping for Windows to ghost it and the click is always seen.
                 progressForm.Cancellable = true;

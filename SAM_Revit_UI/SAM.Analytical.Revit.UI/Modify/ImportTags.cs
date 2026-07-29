@@ -37,7 +37,7 @@ namespace SAM.Analytical.Revit.UI
             using (Core.Windows.Forms.ProgressForm progressForm = new Core.Windows.Forms.ProgressForm("Importing Tags", tags.Count()))
             {
                 // One step per tag and Update pumps the message queue every step, so the form never stops
-                // responding and the click is seen - no ProgressFormHost needed here.
+                // responding and the click is seen - no host thread of its own needed here.
                 progressForm.Cancellable = true;
                 progressForm.Note = "Cancel stops after the current tag - no tags are imported.";
 
