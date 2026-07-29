@@ -29,7 +29,7 @@ namespace SAM.Analytical.Revit.UI
                 dynamic @dynamic = new ExpandoObject();
                 dynamic.Name = name;
                 dynamic.Group = parameterGroup;
-                dynamic.Checked = unselectedParameterGroups != null ? unselectedParameterGroups.Contains(parameterGroup) : true;
+                dynamic.Checked = unselectedParameterGroups != null ? !unselectedParameterGroups.Contains(parameterGroup) : true;
 
                 dynamics.Add(dynamic);
             }
