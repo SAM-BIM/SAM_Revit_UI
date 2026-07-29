@@ -43,15 +43,16 @@ namespace SAM.Analytical.Revit.UI
             }
 
             ViewPlan viewPlan = null;
-            using (Core.Windows.Forms.ComboBoxForm<ViewPlan> comboBoxForm = new Core.Windows.Forms.ComboBoxForm<ViewPlan>("Select ViewPlan", viewPlans, (ViewPlan x) => x.Name, viewPlans.Find(x => x.Id.Value == 312)))
-            {
-                if (comboBoxForm.ShowDialog() != DialogResult.OK)
-                {
-                    return Result.Cancelled;
-                }
+            Core.UI.WPF.ComboBoxWindow<ViewPlan> comboBoxWindow = new Core.UI.WPF.ComboBoxWindow<ViewPlan>("Select ViewPlan", viewPlans, (ViewPlan x) => x.Name, viewPlans.Find(x => x.Id.Value == 312));
 
-                viewPlan = comboBoxForm.SelectedItem;
+            new System.Windows.Interop.WindowInteropHelper(comboBoxWindow).Owner = commandData.Application.MainWindowHandle;
+
+            if (comboBoxWindow.ShowDialog() != true)
+            {
+                return Result.Cancelled;
             }
+
+            viewPlan = comboBoxWindow.SelectedItem;
 
             if (viewPlan == null)
             {

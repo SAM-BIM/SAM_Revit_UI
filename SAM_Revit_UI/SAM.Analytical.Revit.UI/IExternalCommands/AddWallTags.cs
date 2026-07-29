@@ -74,16 +74,23 @@ namespace SAM.Analytical.Revit.UI
             }
 
             double minLength = 1.5;
-            using (Core.Windows.Forms.TextBoxForm<double> textBoxForm = new Core.Windows.Forms.TextBoxForm<double>("Wall Length", "Min Wall Length"))
-            {
-                textBoxForm.Value = minLength;
-                if (textBoxForm.ShowDialog() != System.Windows.Forms.DialogResult.OK)
-                {
-                    return Result.Cancelled;
-                }
+            Core.UI.WPF.TextBoxWindow textBoxWindow = new Core.UI.WPF.TextBoxWindow("Wall Length", "Min Wall Length", minLength);
 
-                minLength = textBoxForm.Value;
+            // TextBoxWindow is not generic, so it carries no numeric key filter of its own. The WinForms
+            // TextBoxForm<double> got one from SetValue attaching EventHandler.ControlText_NumberOnly;
+            // this is that handler's own WPF overload, verbatim.
+            textBoxWindow.Validation = (string x) => !System.Text.RegularExpressions.Regex.IsMatch(x, "[^0-9.-]+");
+
+            new System.Windows.Interop.WindowInteropHelper(textBoxWindow).Owner = externalCommandData.Application.MainWindowHandle;
+
+            if (textBoxWindow.ShowDialog() != true)
+            {
+                return Result.Cancelled;
             }
+
+            // GetValue<double>() with no default returns 0 on an unparseable entry, which is what
+            // TextBoxForm<double>.Value did. Preserved deliberately rather than defaulting to minLength.
+            minLength = textBoxWindow.GetValue<double>();
 
             List<string> templateNames = new List<string> { "Heating Load" };
 

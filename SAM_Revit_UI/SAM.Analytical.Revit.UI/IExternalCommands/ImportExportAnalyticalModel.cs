@@ -190,16 +190,20 @@ namespace SAM.Analytical.Revit.UI
             }
 
             GeometryCalculationMethod geometryCalculationMethod = GeometryCalculationMethod.Undefined;
-            using (Core.Windows.Forms.ComboBoxForm<GeometryCalculationMethod> comboBoxForm = new Core.Windows.Forms.ComboBoxForm<GeometryCalculationMethod>("Geometry Calculation Method"))
-            {
-                comboBoxForm.SelectedItem = geometryCalculationMethod;
-                if(comboBoxForm.ShowDialog() != DialogResult.OK)
-                {
-                    return Result.Cancelled;
-                }
 
-                geometryCalculationMethod = comboBoxForm.SelectedItem;
+            // The single-argument constructor populates the drop-down from the enum values, using
+            // Core.Query.Description for each - same as the WinForms ComboBoxForm it replaces.
+            Core.UI.WPF.ComboBoxWindow<GeometryCalculationMethod> comboBoxWindow = new Core.UI.WPF.ComboBoxWindow<GeometryCalculationMethod>("Geometry Calculation Method");
+            comboBoxWindow.SelectedItem = geometryCalculationMethod;
+
+            new System.Windows.Interop.WindowInteropHelper(comboBoxWindow).Owner = externalCommandData.Application.MainWindowHandle;
+
+            if (comboBoxWindow.ShowDialog() != true)
+            {
+                return Result.Cancelled;
             }
+
+            geometryCalculationMethod = comboBoxWindow.SelectedItem;
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
