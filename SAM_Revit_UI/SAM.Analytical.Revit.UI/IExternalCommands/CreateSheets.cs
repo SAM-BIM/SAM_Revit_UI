@@ -39,15 +39,16 @@ namespace SAM.Analytical.Revit.UI
             List<ViewSheet> viewSheets = new FilteredElementCollector(document).OfClass(typeof(ViewSheet)).Cast<ViewSheet>().ToList();
 
             ViewSheet viewSheet = null;
-            using (Core.Windows.Forms.ComboBoxForm<ViewSheet> comboBoxForm = new Core.Windows.Forms.ComboBoxForm<ViewSheet>("Reference View Sheet", viewSheets, (ViewSheet x) => string.Format("{0} - {1}", x.SheetNumber, x.Name), viewSheets.Find(x => x.Id.Value == 725533)))
-            {
-                if (comboBoxForm.ShowDialog() != DialogResult.OK)
-                {
-                    return Result.Cancelled;
-                }
+            Core.UI.WPF.ComboBoxWindow<ViewSheet> comboBoxWindow = new Core.UI.WPF.ComboBoxWindow<ViewSheet>("Reference View Sheet", viewSheets, (ViewSheet x) => string.Format("{0} - {1}", x.SheetNumber, x.Name), viewSheets.Find(x => x.Id.Value == 725533));
 
-                viewSheet = comboBoxForm.SelectedItem;
+            new System.Windows.Interop.WindowInteropHelper(comboBoxWindow).Owner = commandData.Application.MainWindowHandle;
+
+            if (comboBoxWindow.ShowDialog() != true)
+            {
+                return Result.Cancelled;
             }
+
+            viewSheet = comboBoxWindow.SelectedItem;
 
             if (viewSheet == null)
             {
