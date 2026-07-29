@@ -69,12 +69,30 @@
       if "$(Configuration)" == "Debug2026" (
       set Version=Revit 2026
       )
+
+      if "$(Configuration)" == "Debug2027" (
+      set Version=Revit 2027
+      )
+
       if "$(Configuration)" == "Release2025" (
       set Version=Revit 2025
       )
 
       if "$(Configuration)" == "Release2026" (
       set Version=Revit 2026
+      )
+
+      if "$(Configuration)" == "Release2027" (
+      set Version=Revit 2027
+      )
+
+      ::A Revit-year configuration with no matching branch above would leave Version empty,
+      ::collapsing SAM_DIR to %25APPDATA%25\SAM itself and scattering that year's assemblies
+      ::loose into the shared Rhino/Grasshopper folder. Fail loudly instead - silently
+      ::deploying net10 (2027) assemblies next to net8 ones is far worse than a build error.
+      if "%25Version%25" == "" (
+      echo POST-BUILD ERROR: no SAM_DIR mapping for configuration '$(Configuration)'. Add a 'set Version=Revit ^&lt;year^&gt;' branch above.
+      exit /b 1
       )
 
       set SAM_DIR=$(APPDATA)\SAM\%25Version%25
