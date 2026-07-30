@@ -141,7 +141,7 @@ namespace SAM.Analytical.Revit.UI
                 // live on the same thread as the window it owns, and this one deliberately does not - that is
                 // the whole point of the host. ProgressWindowHost sets Topmost instead, which is what keeps it
                 // in front of a Revit window that has stopped painting.
-                Core.UI.WPF.ProgressWindowHost progressWindowHost = new Core.UI.WPF.ProgressWindowHost("Preparing Model", 6, true, Analytical.Tas.Query.CancelNote(null));
+                Core.Windows.WPF.ProgressWindowHost progressWindowHost = new Core.Windows.WPF.ProgressWindowHost("Preparing Model", 6, true, Analytical.Tas.Query.CancelNote(null));
 
                 try
                 {

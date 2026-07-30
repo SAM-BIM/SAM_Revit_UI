@@ -200,32 +200,12 @@ jobs:
             # CS0234. Same slot as BuildAlls_v4.csproj uses locally. Needs only SAM and SAM_Mollier,
             # both already above.
             'SAM_Validation'
-            # Moved ABOVE SAM_Tas (it used to sit just below). SAM.Core.UI.WPF references
-            # SAM_Excel\build\SAM.Core.Excel.dll and now has to be built before SAM_Tas - see
-            # $preTasProjects. SAM_Excel's only dependency is SAM, so it is free to move up.
-            'SAM_Excel'
             'SAM_Tas'
+            'SAM_Excel'
             'SAM_SQLite'
             'SAM_OpenStudio'
             'SAM_Multitasker'
             'SAM_UI'
-          )
-
-          # Individual PROJECTS built immediately before SAM_Tas, and deliberately not the whole
-          # SAM_UI solution. SAM.Analytical.Grasshopper.Tas (inside SAM_Tas.sln) references
-          # SAM_UI\build\SAM.Core.UI.WPF.dll, but SAM_UI.sln as a whole references
-          # SAM_Tas\build\*.dll - SAM.Analytical.UI and SAM.Analytical.UI.WPF both do. Building
-          # all of SAM_UI here would be a circular dependency and cannot work.
-          #
-          # SAM.Core.UI.WPF is the break in that cycle: it has no SAM_Tas dependency, needs only
-          # SAM\build\SAM.Core.dll and SAM_Excel\build\SAM.Core.Excel.dll, and pulls in
-          # SAM.Core.UI through a ProjectReference - so building it alone produces both DLLs
-          # SAM_Tas needs. SAM_UI still builds in full at the end of $orderedRepos above.
-          #
-          # The same pre-build exists in SAM_Tas and SAM_Rhino_UI's build.yml and in the local
-          # BuildAlls_v4.csproj; change all four together.
-          $preTasProjects = @(
-            'SAM_UI\WPF\SAM.Core.UI.WPF\SAM.Core.UI.WPF.csproj'
           )
 
           $platformOverride = @{
@@ -262,27 +242,7 @@ jobs:
             if ($LASTEXITCODE -ne 0) { throw "MSBuild rebuild failed: $repoName ($cfg | $plat)" }
           }
 
-          function Restore-BuildProject([string]$projPath, [string]$cfg) {
-            if (-not (Test-Path $projPath)) { throw "Missing project: $projPath" }
-            $proj = (Resolve-Path $projPath).Path
-            Write-Host ""
-            Write-Host "=== pre-Tas leaf: $projPath ==="
-
-            $cfgArgs = @("/p:Configuration=$cfg", '/p:Platform=AnyCPU')
-
-            & msbuild $proj /t:Restore @msbuildBase @cfgArgs
-            if ($LASTEXITCODE -ne 0) { throw "MSBuild restore failed: $projPath ($cfg)" }
-
-            & msbuild $proj /t:Build @msbuildBase @cfgArgs
-            if ($LASTEXITCODE -ne 0) { throw "MSBuild build failed: $projPath ($cfg)" }
-          }
-
           foreach ($r in $orderedRepos) {
-            # SAM_Tas cannot be built until SAM.Core.UI.WPF exists - see $preTasProjects.
-            if ($r -eq 'SAM_Tas') {
-              foreach ($p in $preTasProjects) { Restore-BuildProject $p 'Release' }
-            }
-
             $plat = 'Any CPU'
             if ($platformOverride.ContainsKey($r)) { $plat = $platformOverride[$r] }
             Restore-Build $r 'Release' $plat
