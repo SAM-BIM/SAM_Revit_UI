@@ -132,7 +132,6 @@ jobs:
             # Current sow branch: base_ref on PR events, ref_name on push events.
             $sowRef = if ($baseRef -match '^sow/') { $baseRef } elseif ($refName -match '^sow/') { $refName } else { '' }
             if ($sowRef -and $sowRef -ne $headRef) { $candidates += $sowRef }
-            $candidates += 'sow/2026-Q2'
             # Use the auth-token form so private deps (e.g. SAM_Solver) don't prompt
             $url = if ($token) { "https://$token@github.com/$org/$r.git" } else { "https://github.com/$org/$r.git" }
             $cloned = $false
