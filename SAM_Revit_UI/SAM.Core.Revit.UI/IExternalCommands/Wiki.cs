@@ -1,4 +1,7 @@
-﻿using Autodesk.Revit.Attributes;
+﻿// SPDX-License-Identifier: LGPL-3.0-or-later
+// Copyright (c) 2020–2026 Michal Dengusiak & Jakub Ziolkowski and contributors
+
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using SAM.Core.Revit.UI.Properties;
@@ -24,7 +27,7 @@ namespace SAM.Core.Revit.UI
 
         public override Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            Query.StartProcess("https://github.com/HoareLea/SAM/wiki/00-Home");
+            Query.StartProcess("https://github.com/SAM-BIM/SAM/wiki/00-Home");
 
             return Result.Succeeded;
         }
