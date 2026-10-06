@@ -50,6 +50,16 @@ Not yet set by the owner. Record them here at the first Q4 planning pass. Known 
 - Checked, no action: the `github.repository_owner == 'SAM-BIM'` build guard (intentional; its comment names HoareLea only to explain why the guard exists), CODEOWNERS (SAM-BIM owners), and workflow secrets (no HoareLea-named secret). The local `upstream` (HoareLea) remote is preserved.
 - Full cross-repository record, migration table and owner decisions: `SAM_Deploy:sow/2026-Q4` `PROJECT_PROGRESS.md`.
 
+## Q4 runtime-URL cleanup (2026-10-06)
+
+- **Status:** complete. SAM-BIM/SAM_Revit_UI#26 merged into `sow/2026-Q4` as merge commit `6983a2d94106c2468f84537eef69d35a198a09c9` (PR head `18312f136559a1607559321d06ce39cc958ae029`, Q4 base `4f15219`); merge method: merge commit (repository convention). Remote and local `fix/sam-bim-runtime-urls-q4` removed.
+- **Work completed:** The Revit "Post on GitHub" command now opens `https://github.com/SAM-BIM/SAM/issues/new/choose` and the Wiki command `https://github.com/SAM-BIM/SAM/wiki/00-Home`, instead of the `HoareLea/SAM` equivalents (`00-Home` is not an existing page on either wiki; GitHub redirects both to the wiki front page, so only the owner changed). SAM-BIM is the authoritative ecosystem; HoareLea is no longer the synchronised operational source. Record: the PR's `SAM-BIM-RuntimeUrls-Q4.md` document.
+- **Decisions / owner classifications:** `SAM.Analytical.Revit.UI/IExternalCommands/OpenViewers.cs` still opens `hoarelea.github.io/sam-viewer`: KEEP - intentional/deferred external runtime dependency (the page works today; `SAM-BIM/sam-viewer` has no working Pages site, so no replacement URL is invented). Assembly author/contact strings in `Kernel/AssemblyInfo.cs` (`Hoare Lea`, `@hoarelea.com`) are provenance/metadata: KEEP. These are owner decisions, not baseline blockers.
+- **Files changed:** `SAM_Revit_UI/SAM.Core.Revit.UI/IExternalCommands/PostOnGithub.cs`, `Wiki.cs` (2 URL lines, plus the SPDX header the `spdx` check requires in each), `docs/SAM-BIM-RuntimeUrls-Q4.md`.
+- **Validation:** `msbuild SAM_Revit_UI.sln -p:Configuration=Release2026` (the CI configuration; APPDATA/USERPROFILE redirected, CI ReferencePath): 0 errors; `SAM.Core.Revit.UI.dll` contains the new URLs and no `HoareLea/SAM/issues` or `HoareLea/SAM/wiki`. No test project. PR CI build (Revit 2025/2026/2027) and spdx green.
+- **Unresolved issues, risks:** `OpenViewers.cs` depends on the HoareLea-hosted viewer (deferred, see decisions).
+- **Next step:** Enable GitHub Pages on SAM-BIM/sam-viewer (owner decision) and then repoint OpenViewers; this repository has no icon PR.
+
 ---
 
 # Historical record - 2026-Q3 (frozen)
