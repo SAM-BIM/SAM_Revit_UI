@@ -24,7 +24,7 @@ namespace SAM.Core.Revit.UI
 
         public override Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            Query.StartProcess("https://github.com/HoareLea/SAM/issues/new/choose");
+            Query.StartProcess("https://github.com/SAM-BIM/SAM/issues/new/choose");
 
             return Result.Succeeded;
         }
