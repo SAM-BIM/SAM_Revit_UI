@@ -1,0 +1,530 @@
+[
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/AddParameters.cs",
+    "old_resource": "SAM_AddParameters",
+    "resource": "SAM_UI_ValueAddTrue",
+    "object": "value",
+    "op": "add",
+    "plural": true,
+    "container": null,
+    "icon_id": "value_add_True",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ValueAddTrue.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/AddSpaceTags.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_SpaceDisplayTrue",
+    "object": "space",
+    "op": "display",
+    "plural": true,
+    "container": null,
+    "icon_id": "space_display_True",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_SpaceDisplayTrue.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/AddWallTags.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_PanelDisplayTrue",
+    "object": "panel",
+    "op": "display",
+    "plural": true,
+    "container": null,
+    "icon_id": "panel_display_True",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_PanelDisplayTrue.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/AddWindowAndDoorTags.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_ApertureDisplayTrue",
+    "object": "aperture",
+    "op": "display",
+    "plural": true,
+    "container": null,
+    "icon_id": "aperture_display_True",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ApertureDisplayTrue.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/Clean.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_ModelModify",
+    "object": "model",
+    "op": "modify",
+    "plural": false,
+    "container": null,
+    "icon_id": "model_modify",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ModelModify.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/CopyTags.cs",
+    "old_resource": "SAM_CopyWall",
+    "resource": "SAM_UI_NameCopyTrue",
+    "object": "name",
+    "op": "copy",
+    "plural": true,
+    "container": null,
+    "icon_id": "name_copy_True",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_NameCopyTrue.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/CopyWall.cs",
+    "old_resource": "SAM_CopyWall",
+    "resource": "SAM_UI_PanelCopy",
+    "object": "panel",
+    "op": "copy",
+    "plural": false,
+    "container": null,
+    "icon_id": "panel_copy",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_PanelCopy.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/CreateFloorPlans.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_FloorCreateTrue",
+    "object": "floor",
+    "op": "create",
+    "plural": true,
+    "container": null,
+    "icon_id": "floor_create_True",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_FloorCreateTrue.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/CreateSheets.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_ViewCreateTrue",
+    "object": "view",
+    "op": "create",
+    "plural": true,
+    "container": null,
+    "icon_id": "view_create_True",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ViewCreateTrue.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/CreateViews.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_ViewCreateTrue",
+    "object": "view",
+    "op": "create",
+    "plural": true,
+    "container": null,
+    "icon_id": "view_create_True",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ViewCreateTrue.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/DeleteSheets.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_ViewRemoveTrue",
+    "object": "view",
+    "op": "remove",
+    "plural": true,
+    "container": null,
+    "icon_id": "view_remove_True",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ViewRemoveTrue.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/DeleteViews.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_ViewRemoveTrue",
+    "object": "view",
+    "op": "remove",
+    "plural": true,
+    "container": null,
+    "icon_id": "view_remove_True",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ViewRemoveTrue.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/GenerateSharedParametersFile.cs",
+    "old_resource": "SAM_GenerateSharedParametersFile",
+    "resource": "SAM_UI_ValueExportTrue",
+    "object": "value",
+    "op": "export",
+    "plural": true,
+    "container": null,
+    "icon_id": "value_export_True",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ValueExportTrue.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/ImportExportAnalyticalModel.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_ModelImport",
+    "object": "model",
+    "op": "import",
+    "plural": false,
+    "container": null,
+    "icon_id": "model_import",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ModelImport.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/ImportExportAnalyticalModel.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_ModelExport",
+    "object": "model",
+    "op": "export",
+    "plural": false,
+    "container": null,
+    "icon_id": "model_export",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ModelExport.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/ImportExportTags.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_NameImport",
+    "object": "name",
+    "op": "import",
+    "plural": false,
+    "container": null,
+    "icon_id": "name_import",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_NameImport.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/ImportExportTags.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_NameExport",
+    "object": "name",
+    "op": "export",
+    "plural": false,
+    "container": null,
+    "icon_id": "name_export",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_NameExport.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/ModifyInternalCondition.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_InternalConditionModify",
+    "object": "internalCondition",
+    "op": "modify",
+    "plural": false,
+    "container": null,
+    "icon_id": "internalCondition_modify",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_InternalConditionModify.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/OpenTas.cs",
+    "old_resource": "SAM_T3D",
+    "resource": "SAM_UI_ModelDisplay",
+    "object": "model",
+    "op": "display",
+    "plural": false,
+    "container": null,
+    "icon_id": "model_display",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ModelDisplay.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/OpenTas.cs",
+    "old_resource": "SAM_TBD",
+    "resource": "SAM_UI_ResultDisplay",
+    "object": "result",
+    "op": "display",
+    "plural": false,
+    "container": null,
+    "icon_id": "result_display",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ResultDisplay.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/OpenTas.cs",
+    "old_resource": "SAM_TSD",
+    "resource": "SAM_UI_SystemDisplay",
+    "object": "system",
+    "op": "display",
+    "plural": false,
+    "container": null,
+    "icon_id": "system_display",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_SystemDisplay.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/OpenTas.cs",
+    "old_resource": "SAM_TPD",
+    "resource": "SAM_UI_MollierChartDisplay",
+    "object": "mollierChart",
+    "op": "display",
+    "plural": false,
+    "container": null,
+    "icon_id": "mollierChart_display",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_MollierChartDisplay.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/OpenTas.cs",
+    "old_resource": "SAM_PMVAndPPV",
+    "resource": "SAM_UI_ModelDisplay",
+    "object": "model",
+    "op": "display",
+    "plural": false,
+    "container": null,
+    "icon_id": "model_display",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ModelDisplay.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/OpenTas.cs",
+    "old_resource": "SAM_UKBRStudio2013",
+    "resource": "SAM_UI_ModelDisplay",
+    "object": "model",
+    "op": "display",
+    "plural": false,
+    "container": null,
+    "icon_id": "model_display",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ModelDisplay.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/OpenTas.cs",
+    "old_resource": "SAM_NPOStudio",
+    "resource": "SAM_UI_ModelDisplay",
+    "object": "model",
+    "op": "display",
+    "plural": false,
+    "container": null,
+    "icon_id": "model_display",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ModelDisplay.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/OpenTas.cs",
+    "old_resource": "SAM_IDFWizard",
+    "resource": "SAM_UI_ModelDisplay",
+    "object": "model",
+    "op": "display",
+    "plural": false,
+    "container": null,
+    "icon_id": "model_display",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ModelDisplay.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/OpenViewers.cs",
+    "old_resource": "SAM_gbXMLViewer",
+    "resource": "SAM_UI_GeometryDisplay",
+    "object": "geometry",
+    "op": "display",
+    "plural": false,
+    "container": null,
+    "icon_id": "geometry_display",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_GeometryDisplay.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/OpenViewers.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_ModelDisplay",
+    "object": "model",
+    "op": "display",
+    "plural": false,
+    "container": null,
+    "icon_id": "model_display",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ModelDisplay.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/OpenViewers.cs",
+    "old_resource": "SAM_RadViewer",
+    "resource": "SAM_UI_GeometryDisplay",
+    "object": "geometry",
+    "op": "display",
+    "plural": false,
+    "container": null,
+    "icon_id": "geometry_display",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_GeometryDisplay.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/RemoveParameters.cs",
+    "old_resource": "SAM_RemoveParameters",
+    "resource": "SAM_UI_ValueRemoveTrue",
+    "object": "value",
+    "op": "remove",
+    "plural": true,
+    "container": null,
+    "icon_id": "value_remove_True",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ValueRemoveTrue.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Analytical.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Analytical.Revit.UI/IExternalCommands/Simulate.cs",
+    "old_resource": "SAM_Simulate",
+    "resource": "SAM_UI_ModelRun",
+    "object": "model",
+    "op": "run",
+    "plural": false,
+    "container": null,
+    "icon_id": "model_run",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Analytical.Revit.UI/Resources/Icons/SAM_UI_ModelRun.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Core.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Core.Revit.UI/IExternalCommands/PostOnGithub.cs",
+    "old_resource": "SAM_PostOnGitHub",
+    "resource": "SAM_UI_InfoExport",
+    "object": "info",
+    "op": "export",
+    "plural": false,
+    "container": null,
+    "icon_id": "info_export",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Core.Revit.UI/Resources/Icons/SAM_UI_InfoExport.png"
+  },
+  {
+    "project_dir": "SAM_Revit_UI/SAM.Core.Revit.UI",
+    "source": "SAM_Revit_UI/SAM.Core.Revit.UI/IExternalCommands/Wiki.cs",
+    "old_resource": "SAM_Small",
+    "resource": "SAM_UI_InfoGet",
+    "object": "info",
+    "op": "get",
+    "plural": false,
+    "container": null,
+    "icon_id": "info_get",
+    "size": [
+      32,
+      32
+    ],
+    "output": "SAM_Revit_UI/SAM.Core.Revit.UI/Resources/Icons/SAM_UI_InfoGet.png"
+  }
+]

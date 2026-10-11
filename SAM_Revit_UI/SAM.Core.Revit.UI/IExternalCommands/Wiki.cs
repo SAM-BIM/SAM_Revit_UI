@@ -17,7 +17,7 @@ namespace SAM.Core.Revit.UI
 
         public override int Index => 0;
 
-        public override BitmapSource BitmapSource => Convert.ToBitmapSource(Resources.SAM_Small);
+        public override BitmapSource BitmapSource => Convert.ToBitmapSource(Resources.SAM_UI_InfoGet);
 
         public override string Text => "Info";
 

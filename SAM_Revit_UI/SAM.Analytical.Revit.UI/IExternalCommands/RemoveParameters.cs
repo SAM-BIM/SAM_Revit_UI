@@ -20,7 +20,7 @@ namespace SAM.Analytical.Revit.UI
 
         public override int Index => 6;
 
-        public override BitmapSource BitmapSource => Core.Windows.Convert.ToBitmapSource(Resources.SAM_RemoveParameters, 32, 32);
+        public override BitmapSource BitmapSource => Core.Windows.Convert.ToBitmapSource(Resources.SAM_UI_ValueRemoveTrue, 32, 32);
 
         public override string Text => "Remove\nParameters";
 

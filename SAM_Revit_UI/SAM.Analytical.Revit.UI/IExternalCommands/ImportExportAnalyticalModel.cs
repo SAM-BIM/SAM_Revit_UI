@@ -29,13 +29,13 @@ namespace SAM.Analytical.Revit.UI
             SplitButton splitButton = ribbonPanel.AddItem(splitButtonData) as SplitButton;
 
             PushButtonData pushButtonData_Import = new PushButtonData(Core.Query.FullTypeName(typeof(ImportAnalyticalModel)), "Import\nModel", GetType().Assembly.Location, typeof(ImportAnalyticalModel).FullName);
-            pushButtonData_Import.LargeImage = Core.Windows.Convert.ToBitmapSource(Resources.SAM_Small, 32, 32);
+            pushButtonData_Import.LargeImage = Core.Windows.Convert.ToBitmapSource(Resources.SAM_UI_ModelImport, 32, 32);
             pushButtonData_Import.ToolTip = "Import SAM AnalyticalModel";
             splitButton.AddPushButton(pushButtonData_Import);
 
 
             PushButtonData pushButtonData_Export = new PushButtonData(Core.Query.FullTypeName(typeof(ExportAnalyticalModel)), "Export\nModel", GetType().Assembly.Location, typeof(ExportAnalyticalModel).FullName);
-            pushButtonData_Export.LargeImage = Core.Windows.Convert.ToBitmapSource(Resources.SAM_Small, 32, 32);
+            pushButtonData_Export.LargeImage = Core.Windows.Convert.ToBitmapSource(Resources.SAM_UI_ModelExport, 32, 32);
             pushButtonData_Export.ToolTip = "Export SAM AnalyticalModel";
             splitButton.AddPushButton(pushButtonData_Export);
         }

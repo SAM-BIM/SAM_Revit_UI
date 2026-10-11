@@ -20,7 +20,7 @@ namespace SAM.Analytical.Revit.UI
 
         public override int Index => 8;
 
-        public override BitmapSource BitmapSource => Core.Windows.Convert.ToBitmapSource(Resources.SAM_Small);
+        public override BitmapSource BitmapSource => Core.Windows.Convert.ToBitmapSource(Resources.SAM_UI_InternalConditionModify);
 
         public override string Text => "Modify Internal\nCondition";
 

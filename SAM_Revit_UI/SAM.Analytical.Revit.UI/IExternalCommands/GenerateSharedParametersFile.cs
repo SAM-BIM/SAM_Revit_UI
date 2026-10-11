@@ -23,7 +23,7 @@ namespace SAM.Analytical.Revit.UI
 
         public override int Index => 4;
 
-        public override BitmapSource BitmapSource => Core.Windows.Convert.ToBitmapSource(Resources.SAM_GenerateSharedParametersFile, 32, 32);
+        public override BitmapSource BitmapSource => Core.Windows.Convert.ToBitmapSource(Resources.SAM_UI_ValueExportTrue, 32, 32);
 
         public override string Text => "Generate";
 
