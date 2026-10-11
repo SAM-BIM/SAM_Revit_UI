@@ -1,4 +1,7 @@
-﻿using Autodesk.Revit.Attributes;
+﻿// SPDX-License-Identifier: LGPL-3.0-or-later
+// Copyright (c) 2020-2026 Michal Dengusiak & Jakub Ziolkowski and contributors
+
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using SAM.Analytical.Revit.UI.Properties;
@@ -15,7 +18,7 @@ namespace SAM.Analytical.Revit.UI
 
         public override int Index => 20;
 
-        public override BitmapSource BitmapSource => Core.Windows.Convert.ToBitmapSource(Resources.SAM_CopyWall, 32, 32);
+        public override BitmapSource BitmapSource => Core.Windows.Convert.ToBitmapSource(Resources.SAM_UI_NameCopyTrue, 32, 32);
 
         public override string Text => "Copy\nTags";
 

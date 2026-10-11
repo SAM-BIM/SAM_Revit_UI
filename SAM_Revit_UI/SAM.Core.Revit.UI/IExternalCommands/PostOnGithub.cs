@@ -17,7 +17,7 @@ namespace SAM.Core.Revit.UI
 
         public override int Index => 1;
 
-        public override BitmapSource BitmapSource => Convert.ToBitmapSource(Resources.SAM_PostOnGitHub, 32, 32);
+        public override BitmapSource BitmapSource => Convert.ToBitmapSource(Resources.SAM_UI_InfoExport, 32, 32);
 
         public override string Text => "Post on\nGithub";
 

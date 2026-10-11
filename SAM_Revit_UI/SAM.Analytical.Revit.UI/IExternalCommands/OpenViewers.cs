@@ -1,4 +1,7 @@
-﻿using Autodesk.Revit.Attributes;
+﻿// SPDX-License-Identifier: LGPL-3.0-or-later
+// Copyright (c) 2020-2026 Michal Dengusiak & Jakub Ziolkowski and contributors
+
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using SAM.Analytical.Revit.UI.Properties;
@@ -20,19 +23,19 @@ namespace SAM.Analytical.Revit.UI
             SplitButton splitButton = ribbonPanel.AddItem(splitButtonData) as SplitButton;
 
             PushButtonData pushButtonData_T3D = new PushButtonData(Core.Query.FullTypeName(typeof(OpenGbXMLViewer)), "gbXML\nViewer", GetType().Assembly.Location, typeof(OpenGbXMLViewer).FullName);
-            pushButtonData_T3D.LargeImage = Core.Windows.Convert.ToBitmapSource(Resources.SAM_gbXMLViewer, 32, 32);
+            pushButtonData_T3D.LargeImage = Core.Windows.Convert.ToBitmapSource(Resources.SAM_UI_GeometryDisplay, 32, 32);
             pushButtonData_T3D.ToolTip = "LadybugTools Spider gbXMLViewer";
             pushButtonData_T3D.AvailabilityClassName = typeof(AlwaysAvailableExternalCommandAvailability).FullName;
             splitButton.AddPushButton(pushButtonData_T3D);
 
             PushButtonData pushButtonData_SAM = new PushButtonData(Core.Query.FullTypeName(typeof(OpenSAMViewer)), "SAM\nViewer", GetType().Assembly.Location, typeof(OpenSAMViewer).FullName);
-            pushButtonData_SAM.LargeImage = Core.Windows.Convert.ToBitmapSource(Resources.SAM_Small, 32, 32);
+            pushButtonData_SAM.LargeImage = Core.Windows.Convert.ToBitmapSource(Resources.SAM_UI_ModelDisplay, 32, 32);
             pushButtonData_SAM.ToolTip = "SAM Viewer";
             pushButtonData_SAM.AvailabilityClassName = typeof(AlwaysAvailableExternalCommandAvailability).FullName;
             splitButton.AddPushButton(pushButtonData_SAM);
 
             PushButtonData pushButtonData_TBD = new PushButtonData(Core.Query.FullTypeName(typeof(OpenRadViewer)), "Rad\nViewer", GetType().Assembly.Location, typeof(OpenRadViewer).FullName);
-            pushButtonData_TBD.LargeImage = Core.Windows.Convert.ToBitmapSource(Resources.SAM_RadViewer, 32, 32);
+            pushButtonData_TBD.LargeImage = Core.Windows.Convert.ToBitmapSource(Resources.SAM_UI_GeometryDisplay, 32, 32);
             pushButtonData_TBD.ToolTip = "LadybugTools Spider radViewer WIP";
             pushButtonData_TBD.AvailabilityClassName = typeof(AlwaysAvailableExternalCommandAvailability).FullName;
             splitButton.AddPushButton(pushButtonData_TBD);

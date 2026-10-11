@@ -169,4 +169,73 @@
   <data name="SAM_UKBRStudio2013" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SAM_UKBRStudio2013.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="SAM_UI_ApertureDisplayTrue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_ApertureDisplayTrue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_FloorCreateTrue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_FloorCreateTrue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_GeometryDisplay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_GeometryDisplay.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_InternalConditionModify" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_InternalConditionModify.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_ModelDisplay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_ModelDisplay.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_ModelExport" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_ModelExport.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_ModelImport" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_ModelImport.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_ModelModify" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_ModelModify.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_ModelRun" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_ModelRun.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_MollierChartDisplay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_MollierChartDisplay.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_NameCopyTrue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_NameCopyTrue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_NameExport" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_NameExport.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_NameImport" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_NameImport.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_PanelCopy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_PanelCopy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_PanelDisplayTrue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_PanelDisplayTrue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_ResultDisplay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_ResultDisplay.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_SpaceDisplayTrue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_SpaceDisplayTrue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_SystemDisplay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_SystemDisplay.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_ValueAddTrue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_ValueAddTrue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_ValueExportTrue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_ValueExportTrue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_ValueRemoveTrue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_ValueRemoveTrue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_ViewCreateTrue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_ViewCreateTrue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SAM_UI_ViewRemoveTrue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\SAM_UI_ViewRemoveTrue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

@@ -21,7 +21,7 @@ namespace SAM.Analytical.Revit.UI
 
         public override int Index => 5;
 
-        public override BitmapSource BitmapSource => Core.Windows.Convert.ToBitmapSource(Resources.SAM_AddParameters, 32, 32);
+        public override BitmapSource BitmapSource => Core.Windows.Convert.ToBitmapSource(Resources.SAM_UI_ValueAddTrue, 32, 32);
 
         public override string Text => "Add\nParameters";
 

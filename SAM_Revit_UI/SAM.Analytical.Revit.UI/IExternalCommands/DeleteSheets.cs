@@ -19,7 +19,7 @@ namespace SAM.Analytical.Revit.UI
 
         public override int Index => 15;
 
-        public override BitmapSource BitmapSource => Core.Windows.Convert.ToBitmapSource(Resources.SAM_Small);
+        public override BitmapSource BitmapSource => Core.Windows.Convert.ToBitmapSource(Resources.SAM_UI_ViewRemoveTrue);
 
         public override string Text => "Delete\nSheets";
 
